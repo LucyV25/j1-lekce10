@@ -7,6 +7,9 @@ public class UlozenyStav {
     private Point cat;
 
     public Point getMouse() {
+        int mysX = mouse.getLocation().x;
+        int mysY = mouse.getLocation().y;
+
         return mouse;
     }
 
@@ -15,6 +18,9 @@ public class UlozenyStav {
     }
 
     public Point getCat() {
+        int kockaX = cat.getLocation().x;
+        int kockaY = cat.getLocation().y;
+
         return cat;
     }
 

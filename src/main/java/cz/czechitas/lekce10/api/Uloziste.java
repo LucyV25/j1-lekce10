@@ -6,6 +6,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.Files;
 
 public class Uloziste {
 
@@ -14,8 +15,8 @@ public class Uloziste {
     private Mouse mouse;
 
 
-    public void nacistPlochuZeSouboru(Path file) throws IOException {
-        UlozenaPlocha ulozenaPlocha = objectMapper.readValue(file.toFile(), UlozenaPlocha.class);
+    public void nacistPlochuZeSouboru(Path path) throws IOException {
+        UlozenaPlocha ulozenaPlocha = objectMapper.readValue(path.toFile(), UlozenaPlocha.class);
         cat = new Cat(ulozenaPlocha.getCat());
         mouse = new Mouse(ulozenaPlocha.getMouse());
         for (Point treePoint : ulozenaPlocha.getTrees()) {
@@ -26,7 +27,7 @@ public class Uloziste {
     }
 
     public void nacistPlochuZeSouboru() throws IOException {
-        nacistPlochuZeSouboru(Paths.get("level-01.json"));
+        nacistPlochuZeSouboru(Path.of("level-01.json"));
     }
 
     public void nacistStavZeSouboru(Path path)  throws IOException {
@@ -34,6 +35,13 @@ public class Uloziste {
         // Načíst objekt UlozenyStav pomocí objectMapper.readValue(file, UlozenyStav.class)
         // Získat z UlozenyStav souřadnice kočky a myši
         // Zapsat tyto souřadnice do objektů kočky a myši pomocí setLocation()
+        UlozenyStav ulozenyStav = objectMapper.readValue(path.toFile(), UlozenyStav.class);
+        Point kocka=ulozenyStav.getCat();
+        Point mys=ulozenyStav.getMouse();
+        cat.setLocation(kocka);
+        mouse.setLocation(mys);
+
+
     }
 
     public void nacistStavZeSouboru() throws IOException {
@@ -45,6 +53,11 @@ public class Uloziste {
         // Vytvořit objekt UlozenyStav
         // Uložit do něj souřadnice kočky a myši – souřadnice získáte voláním getLocation()
         // Uložit objekt UlozenyStav do souboru pomocí objectMapper.writeValue(file, object)
+        UlozenyStav ulozenyStav=new UlozenyStav();
+        ulozenyStav.setCat(cat.getLocation());
+        ulozenyStav.setMouse(mouse.getLocation());
+        objectMapper.writeValue(path.toFile(),ulozenyStav);
+
     }
 
     public void ulozitStavDoSouboru() throws IOException {
